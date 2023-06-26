@@ -54,4 +54,38 @@ public class ErrorPageController {
         log.info("dispatchType={}", request.getDispatcherType());
     }
 
+
+//    javax.servlet.error.exception : exception
+//    javax.servlet.error.exception_type : exception type
+//    javax.servlet.error.message : errormsg
+//    javax.servlet.error.request_uri : client request URI
+//    javax.servlet.error.servlet_name : name of servlet with error
+//    javax.servlet.error.status_code : HTTP status code
+
+
+//    understanding servlet exceptions - filters , interceptors and DispatchType
+
+//    full control flow
+//    1. WAS(exception reaches here) <- filter <- servlet <-interceptor <-controller(source
+//    2. WAS `/error-page/500` request(again) -> filter -> servlet -> interceptor -> controller(/error-page/500) -> View
+
+//    when an error/exception occurs, WAS generates {2} from the control flow.
+//    but given the instance of 1, where the code passed through both the filter and the interceptor, but caused an exception at the controller {1},
+//    one can see the duplicate call of the interceptor and the filter objects at {2} is inefficient
+//    this is the reason why servlet provides an additional information called DispatcherType
+//    which is used to differentiate, for the filter and the interceptor, whether its call is genuine,
+//    (from the client), or due to the error callback {2}.
+
+//    DispatcherType is an enum implemented as follows
+//    javax.servlet.DispatcherType
+//    public enum DispatcherType {
+//     FORWARD, -> forward call from a servlet to another servlet or JSP
+//    --- RequestDispatcher.forward(request, response);
+//     INCLUDE, -> when the servlet includes a result from another servlet or JSP
+//    --- RequestDispatcher.include(request, response);
+//     REQUEST, -> a normal client request
+//     ASYNC, -> servlet asynchronous call
+//     ERROR -> error request (error callback)
+//    }
+
 }
