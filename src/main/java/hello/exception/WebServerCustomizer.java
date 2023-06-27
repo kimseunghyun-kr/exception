@@ -8,7 +8,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class WebServerCustomizer<T extends ConfigurableWebServerFactory> implements WebServerFactoryCustomizer <T> {
     @Override
     public void customize(T factory) {
