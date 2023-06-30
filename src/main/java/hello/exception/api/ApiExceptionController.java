@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -48,6 +49,41 @@ public class ApiExceptionController {
                 IllegalArgumentException());
     }
 
+    //One of the three default ExceptionResolvers provided by Spring Boot.
+//        with the following priorities in HandlerExceptionResolverComposite
+//        1. ExceptionHandlerExceptionResolver
+//        2. ResponseStatusExceptionResolver
+//        3. DefaultHandlerExceptionResolver
+
+//    this Controller method is a basic method to demonstrate DefaultHandlerExceptionResolver being called
+//    through causing a TypeMismatchError during parameter binding,
+//    by inputting a String to the @RequestParam Integer Data within the HTTP request.
+//
+//    DefaultHandlerExceptionResolver handles exceptions that occur within Spring's scope
+//    A main use case for DefaultHandlerExceptionResolver can be for TypeMismatchException
+//    which occurs during parameter binding.
+//    Without intervention from HandlerExceptionResolvers, this exception is thrown to the servlet container,
+//    resulting in error 500.
+//    However, given the that parameter binding errors are typically caused by clients
+//    giving a bad HTTP request, under the HTTP framework, it should be given an error 400;
+//    DefaultHandlerExceptionResolver does precisely that, converting the error from 500 to 400;
+//    there are many other such predetermined exception control flow rerouting/ handling methods
+//    within DefaultHandlerExceptionResolver.
+
+//    within DefaultHandlerExceptionResolver.handleTypeMisMatch,
+//    the following code is present
+//    response.sendError(HttpServletResponse.SC_BAD_REQUEST) (400)
+//    so basically response.sendError() is still used, but just that it was already coded out by Spring
+//    as sendError(400) is called, WAS will request for /error internally as callback
+
+//    the following controller method
+    @GetMapping("/api/default-handler-ex")
+    public String defaultException(@RequestParam Integer data) {
+        return "ok";
+    }
+
+
+
     @Data
     @AllArgsConstructor
     static class MemberDto{
@@ -57,7 +93,7 @@ public class ApiExceptionController {
 
 
 //    this is just a sample showcase to show how BasicErrorController can b extended to modify JSON messages
-//    However, managing such API errors(RESPONSEENTITY) is a chore through the BasicErrorController
+//    However, managing such API errors(RESPONSE ENTITY) is a chore through the BasicErrorController
 //    unlike the HTML pages.
 //    This is so as, for each API, according to each controller and exception, there may arise a need to
 //    output a different result.
