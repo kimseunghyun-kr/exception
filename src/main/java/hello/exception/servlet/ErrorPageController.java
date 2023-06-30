@@ -110,9 +110,32 @@ public class ErrorPageController {
 
         Integer statusCode = (Integer)request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         return new ResponseEntity<>(result, HttpStatus.valueOf(statusCode));
-
-
     }
 
 
+//    API exception handling can also be done through what Spring boot provides by default.
+//    Taking a look at the BasicErrorController code again,
+
+//    @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+//    public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {}
+
+//    @RequestMapping
+//    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {}
+
+
+//     errorHtml() : produces = MediaType.TEXT_HTML_VALUE
+//     error() : other cases, returns as JSON in HTTPBODY through ResponseEntity
+
+//     recap that spring boot's default error setting will lead to /error URI
+//     applies to BasicErrorController as well,
+//     modifiable by changing server.error.path on applications.settings
+
+//     BasicErrorController provides the following settings
+//    -> recap from before (springBootErrorPage.md)
+//     server.error.include-binding-errors=always
+//     server.error.include-exception=true
+//     server.error.include-message=always
+//     server.error.include-stacktrace=always
+
+//     best practice to log the above, not revealing it to Users
 }

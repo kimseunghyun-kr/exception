@@ -2,20 +2,25 @@ package hello.exception;
 
 import hello.exception.filter.LogFilter;
 import hello.exception.interceptor.LogInterceptor;
+import hello.exception.resolver.MyHandlerExceptionResolver;
+import hello.exception.resolver.UserHandlerExceptionResolver;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterRegistration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
 //    @Bean
-    public FilterRegistrationBean logFilter() {
+    public FilterRegistrationBean<?> logFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LogFilter());
         filterRegistrationBean.setOrder(1);
@@ -38,6 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/css/**", "/*.ico"
                         , "/error", "/error-page/**" //오류 페이지 경로
                 );
+    }
 
 //        the "/error-page/** is keeping the interceptors being called during calls to error pages
 //        (sole gatekeeper lol)
@@ -57,5 +63,14 @@ public class WebConfig implements WebMvcConfigurer {
 //  3. WAS error page check
 //  4. WAS(/error-page/500, dispatchType=ERROR) -> filter(x) -> servlet -> interceptor(x) -> 
 //  controller(/error-page/500) -> View
+
+//    do not use configureHandlerExceptionResolvers as it will remove the HandlerExceptionResolver that is added by default.
+//    use extendHandlerExceptionResolvers instead.
+    @Override
+    public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver>
+                                                    resolvers) {
+        resolvers.add(new MyHandlerExceptionResolver());
+        resolvers.add(new UserHandlerExceptionResolver());
     }
+
 }
