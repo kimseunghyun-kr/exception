@@ -26,7 +26,7 @@ and priority logic order, will call upon the matching page
 1. view templates
    resources/templates/error/500.html
    resources/templates/error/5xx.html
-2. static and public resources
+2. static and public resources  ( for stuff you do not plan on changing afterwards)
    resources/static/error/400.html
    resources/static/error/404.html
    resources/static/error/4xx.html
