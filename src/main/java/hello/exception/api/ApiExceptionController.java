@@ -99,6 +99,8 @@ public class ApiExceptionController {
 //    output a different result.
 //    for instance, should there be a same exception in an API managing users, and an API managing items
 //    despite the exception being the same, the output must be different.
+//    furthermore , across different servers that try to communicate to this backend, the required answer format can be vastly
+//    different as well.
 //    as can be seen from the above case, this adds far more micromanaging components to API exceptions
 //    (creating different exceptions, giving a different status according to the exceptions/errors.
 //    hence, use BasicErrorController exception handling for HTML and not for API methods
