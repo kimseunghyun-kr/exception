@@ -27,6 +27,9 @@ public class ApiExceptionController {
         if(id.equals(("ex"))){
             throw new RuntimeException("wrong user");
         }
+
+//        just a small example case to provide a case for IllegalArgumentExcetpion
+//        client should not send bad but they did scenario
         if (id.equals("bad")) {
             throw new IllegalArgumentException("wrong input value");
         }
